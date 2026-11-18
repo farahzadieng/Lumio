@@ -1,3 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 520" role="img">
-<defs><filter id="shadow"><feGaussianBlur stdDeviation="5"/></filter></defs><circle cx="195" cy="160" r="83" fill="#C99033" opacity=".22" filter="url(#shadow)"/><circle cx="195" cy="152" r="80" fill="#FFCD62" stroke="#FFE3A0" stroke-width="3"/>
-</svg>

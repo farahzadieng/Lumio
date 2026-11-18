@@ -1,3 +1,0 @@
-# CODEX MASTER PROMPT v2.2
-
-**MANDATORY:** Read `AGENTS.md` and `CODEX_START_PROMPT.md` before anything else. They override older statements about art readiness. Previous 60-layer SVG art was rejected and quarantined. Produce a genuinely new premium dimensional paper-cut world using professional art tools, show day/night and separate layer exports for approval, and do not proceed if such tools are unavailable. Never use old flat artwork in production. Preserve approved icon and character. Then follow the complete product, motion, architecture, local-first, Dots, and onboarding specs in docs/01–15. Do not invent missing assets or claim completion without visual and functional verification.

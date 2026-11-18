@@ -1,15 +1,15 @@
-# Actual asset audit and missing-asset manifest
+# Actual asset audit and remaining asset manifest
 
-Inventory date: 2026-11-18 (Asia/Tehran). Source of truth is the filesystem, not historical docs.
+Inventory date: 2026-11-18 (Asia/Tehran). The filesystem, not historical docs, is the source of truth.
 
-| Asset group | Actual files | Status / missing work |
-| --- | ---: | --- |
-| Approved Lumio icons | 19 files in `assets/icons/`, plus `references/approved-icon-original.png` | Preserve. Icon source was used only as a style reference. |
-| Existing character concept | 1 GIF in `assets/character/` | Preserve. Concept, not a full performance library. |
-| Paper guest motion | 8 GIF + 8 animated WebP in `assets/paper-guest/` | Preserve. All 16 files are 360×360, transparent, looping, with 8 frames except dance (12). Frame pixels change, but expression-specific facial animation has **not** been verified; docs describe whole-body bob/rotation prototypes. Static SVG expression sources are absent from the live asset tree. |
-| Living world | `scene-manifest.json` only | All **60** referenced runtime layers are missing. `verify_assets.py` fails at `sky-dawn.svg`. New day/night masters and depth-plane tests are in `art-checkpoint/`, not approved runtime assets. |
-| World/props | README placeholders only | All new premium props, interactive objects, masks, fauna, particles, dawn/dusk variants and exact 60-layer registrations missing. |
-| Fonts | None in project | Supplied Estedad-Mad file and verified Dots variant/license are not present. Dots axis cannot be assumed. A locally licensed body face is also needed. |
-| App/PWA | No React source/package/manifest/service worker | Entire implementation is gated on art approval and production layer repair. |
+| Group | Actual | Remaining |
+| --- | --- | --- |
+| Approved icons | 19 files in `assets/icons/`; approved reference image | Preserved and used for PWA branding. Maskable safe zone still needs independent verification. |
+| Character concept | 1 GIF in `assets/character/` | Preserved; concept only. |
+| Paper guest loops | 8 GIF + 8 animated WebP in `assets/paper-guest/` | 360×360, alpha, loop, 8 frames each except dance (12). Distinct static facial expressions visible; motion is mostly small whole-body changes. Premium dimensional revision and cameo occlusion integration pending. Static SVG expression sources absent from live tree. |
+| Living world | `assets/living-world/scene-manifest.json` plus 16 new runtime WebPs in `public/art/` | All 60 historical manifest paths still point to missing SVGs; `verify_assets.py` fails at `sky-dawn.svg`. Four raster planes per mode are functional, but 60 independent object assets and exact registered source masks remain missing. |
+| Props/events | Placeholder README files in `assets/world/` and `assets/props/` | Premium independent fauna, particles, interactive objects, occluders and bespoke event rigs pending. |
+| Fonts | Four local Estedad body weights plus OFL notice in `public/fonts/` | Supplied Estedad-Mad file and verified Dots variant are absent. No Dots effect is simulated. |
+| App/PWA | React/TS/Vite source, manifest and generated Service Worker | Functional checkpoint exists. Full art system, real iOS/Android profiling and release QA pending. |
 
-The quarantined environment and prop SVGs are rejected. Their filenames are not candidates for copying, recoloring or runtime import.
+The quarantined environment and prop SVGs were not copied, recolored, displayed or imported into runtime art.

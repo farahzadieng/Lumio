@@ -23,7 +23,7 @@ Exactly four primary tabs: **Today** (living scene and daily check-ins), **Journ
 - Day begins at local 00:00; a missed day is assessed when a later day begins/opens. No grace window by default.
 - Habit created today may be checked today. A habit without a check-in on its creation day becomes a missed day on the next day, unless product owner changes this rule.
 - Undo today's completion is allowed with explicit confirmation; recalculate streak and graduation transactionally. For completed/graduated habits, do not silently undo historical milestones.
-- Retroactive check-ins and edits to previous days are disabled in MVP. Journey is read-only history.
+- User revision, 2026-11-19: a missed check-in may be added for yesterday only, from Journey. Earlier days and future dates are read-only. The habit must already have existed on that day. Recalculate streak and graduation transactionally, including when today was completed before yesterday.
 - A user can archive an active habit; archiving does not count as graduation. Confirm before destructive actions.
 - A habit's streak is derived from ordered daily completion records rather than increment-only counters. Idempotent completion writes use unique `(habitId, dayKey)`.
 - On timezone travel, do not award multiple days automatically. Use the stored local-day key for an event and evaluate today using current timezone; document boundary behavior and test it.

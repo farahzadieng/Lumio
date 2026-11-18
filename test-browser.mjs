@@ -1,0 +1,18 @@
+import {chromium} from 'playwright';
+const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+const page=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1});
+const errors=[];page.on('response',r=>{if(r.status()>=400)errors.push(`${r.status()} ${r.url()}`)});page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
+await page.goto('http://127.0.0.1:5173/');await page.waitForTimeout(1200);
+await page.screenshot({path:'test-artifacts/onboarding-390.png',fullPage:true});
+await page.getByRole('button',{name:'ادامه'}).click();await page.waitForTimeout(350);
+await page.getByRole('textbox',{name:'نام عادت'}).fill('کتاب خواندن');await page.getByRole('button',{name:'ذخیره'}).click();await page.waitForTimeout(1000);
+await page.screenshot({path:'test-artifacts/today-390.png',fullPage:true});
+await page.getByRole('button',{name:'انجام شد: کتاب خواندن'}).click();await page.waitForTimeout(300);
+await page.reload();await page.waitForTimeout(600);
+const checked=await page.getByRole('button',{name:'بازگردانی: کتاب خواندن'}).count();
+await page.getByRole('button',{name:'مسیر من'}).click();await page.waitForTimeout(1000);await page.screenshot({path:'test-artifacts/journey-390.png',fullPage:true});
+await page.getByRole('button',{name:'نگاه من'}).click();await page.waitForTimeout(1000);await page.screenshot({path:'test-artifacts/insights-390.png',fullPage:true});
+await page.getByRole('button',{name:'تنظیمات'}).click();await page.waitForTimeout(1000);await page.screenshot({path:'test-artifacts/profile-390.png',fullPage:true});
+await page.getByRole('button',{name:'English'}).click();await page.waitForTimeout(1000);await page.screenshot({path:'test-artifacts/profile-en-390.png',fullPage:true});
+await page.getByRole('button',{name:'Today'}).click();await page.setViewportSize({width:430,height:932});await page.waitForTimeout(1000);await page.screenshot({path:'test-artifacts/today-en-430.png',fullPage:true});
+console.log(JSON.stringify({checkedAfterReload:checked,errors,screenshots:8}));await browser.close();

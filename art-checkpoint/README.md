@@ -1,23 +1,22 @@
-# Lumio art direction checkpoint — awaiting approval and layer repair
+# Lumio approved art direction and layer checkpoint
 
-This folder is a **visual proposal**, not runtime art. No file here is imported by an app. The rejected v2 environment in `references/REJECTED_V2_ART_DO_NOT_USE/` was not used as an input.
+The client approved the new day/night paper-cut style on 2026-11-18. The rejected v2 environment in `references/REJECTED_V2_ART_DO_NOT_USE/` was never used as an input.
 
-## Delivered
+## Delivered art
 
-- `day-master.png`, `night-master.png`: new 995×1581 RGB paper-diorama compositions, authored with the built-in image-generation tool. The night image is a relight of the day master with closely matching geometry.
-- `layers/`: background, midground and foreground generation tests for each mode. Midground and foreground have actual alpha channels and reconstructed hidden regions; background is opaque. The sky-object layers have alpha but **fail edge QA** because of colored fringing and contaminated shadows. These files are explicitly named `FAILED-QA`.
-- `day-layer-test-FAILED-QA.jpg`, `night-layer-test-FAILED-QA.jpg`: diagnostic composites of those layers. They are not replacements for the masters.
-- `art-contact-sheet.jpg`: masters, isolated depth-plane tests and diagnostic composites.
-- `screenshots/`: master-art mock screenshots at 320×690, 375×812, 390×844 and 430×932. The lower cream area is deliberately reserved for future habit UI; no UI has been built.
+- `day-master.png`, `night-master.png`: new 995×1581 RGB visual masters. Night is a relight with closely matching geometry.
+- `layers/`: separate background, sky-object, midground and foreground source tests for day/night. The midground and foreground have true alpha. Sky-object source files are named `FAILED-QA` because they contain colored edge contamination.
+- `day-layers-checkpoint.ora`, `night-layers-checkpoint.ora`: editable four-layer OpenRaster documents. The sky-object layer still requires manual edge repair.
+- `art-contact-sheet.jpg`: visual audit of masters, layers and composites.
+- `screenshots/`: art-only mobile previews at 320, 375, 390 and 430 px widths.
+- `public/art/`: 16 optimized, sRGB-tagged runtime WebPs: four depth planes for dawn, day, dusk and night. Dawn/dusk are color-graded from the approved day geometry. The runtime sky assets had conservative alpha cleanup and were visually inspected at mobile sizes.
 
-## QA result and production blocker
+## Production limit
 
-The two flattened masters look directionally suitable for approval. The current cutout planes do **not** reconstruct the masters at production quality: sky-object alpha has vivid red/yellow/gray fringing, and independently generated planes shift small details and edges. The night planes also need exact pixel registration against day. I am stopping at the required approval gate. A production layer source needs a designer or image editor with precise object masks, manual edge decontamination, inpainting under occlusions, and layered PSD/PSB or equivalent export; alternatively supply approved pre-separated source layers. Image generation here made convincing masters but did not deliver clean, exact, separately editable production layers by itself.
+These four depth planes make a working dimensional scene, but do not fulfill the specified 60 independently editable object assets. Independently generated plane details and day/night edges do not align pixel-perfectly. The fine-grained production source still needs precise object masking, edge decontamination, inpainting beneath occlusions, and registered layered export. An illustrator or design workflow capable of those operations, or approved pre-separated source files, is required to finish the 60-asset system. The runtime app is a checkpoint prototype, not final art production.
 
-The 60 scene slots in `assets/living-world/scene-manifest.json` remain unfilled. The app and animation system have not been started.
+## Generation method and rights
 
-## Art prompt set
+Built-in imagegen created the masters and extracted planes. The master prompt specified a portrait 390:620 fibrous cardstock diorama in the approved icon palette, with upper-left key light, turquoise sky, far mountains, jade hills, cream cottage with coral roof, winding stream, trees, flowers and foreground occluders; it prohibited UI, characters, flat clipart, thick outlines and plastic 3D. The night edit kept the layout while changing moon, stars, teal lighting and glowing windows. Each plane extraction requested reconstructed hidden areas and transparent alpha where appropriate. Generated masters have no embedded ICC profile; runtime WebPs are tagged sRGB. A true 3× source export and source-rights review remain pending.
 
-Built-in imagegen was used throughout. The master prompt specified a portrait 390:620 premium fibrous cardstock diorama in the approved icon's palette, with upper-left key light, turquoise sky, far mountains, mint/jade hills, cream cottage with coral roof, winding stream, trees, flowers and foreground occluders; it prohibited UI, characters, flat clipart, thick outlines and plastic 3D. The night edit preserved the layout while substituting moon, stars, deep teal lighting and warm cottage windows. Separate extraction prompts requested a complete reconstructed far background, true-alpha midground hills/cottage/trees, true-alpha foreground river/flowers/leaves, and true-alpha celestial/cloud objects; night planes were relit from the day planes. The sky-object extraction failed clean-alpha QA.
-
-Generated images have no embedded ICC profile; a controlled sRGB conversion and 2×/3× production export remain pending. Source rights for the generated art must be reviewed before release. Existing icon and character files were neither altered nor replaced.
+Approved icons and character originals were neither altered nor replaced. Character loops were inspected and kept out of the runtime scene because their flat finish does not yet match the approved dimensional world.

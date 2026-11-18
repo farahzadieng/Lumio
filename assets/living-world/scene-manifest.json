@@ -1,0 +1,830 @@
+{
+  "coordinateSystem": {
+    "viewBox": [
+      0,
+      0,
+      390,
+      520
+    ],
+    "aspect": "390/520",
+    "layers": 60
+  },
+  "layers": [
+    {
+      "id": "sky-dawn",
+      "file": "assets/living-world/sky-dawn.svg",
+      "zone": "sky",
+      "z": 0,
+      "motion": "crossfade",
+      "amplitude": "opacity",
+      "duration": "1.2s",
+      "anchor": null,
+      "mode": "dawn",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "sky-day",
+      "file": "assets/living-world/sky-day.svg",
+      "zone": "sky",
+      "z": 1,
+      "motion": "crossfade",
+      "amplitude": "opacity",
+      "duration": "1.2s",
+      "anchor": null,
+      "mode": "day",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "sky-dusk",
+      "file": "assets/living-world/sky-dusk.svg",
+      "zone": "sky",
+      "z": 2,
+      "motion": "crossfade",
+      "amplitude": "opacity",
+      "duration": "1.2s",
+      "anchor": null,
+      "mode": "dusk",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "sky-night",
+      "file": "assets/living-world/sky-night.svg",
+      "zone": "sky",
+      "z": 3,
+      "motion": "crossfade",
+      "amplitude": "opacity",
+      "duration": "1.2s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "sun-disc",
+      "file": "assets/living-world/sun-disc.svg",
+      "zone": "sky",
+      "z": 5,
+      "motion": "gentle-glow",
+      "amplitude": "opacity 0.06",
+      "duration": "11s",
+      "anchor": null,
+      "mode": "dawn,day,dusk",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "moon-crescent",
+      "file": "assets/living-world/moon-crescent.svg",
+      "zone": "sky",
+      "z": 6,
+      "motion": "float",
+      "amplitude": "y 2px",
+      "duration": "14s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-01",
+      "file": "assets/living-world/star-01.svg",
+      "zone": "sky",
+      "z": 7,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-02",
+      "file": "assets/living-world/star-02.svg",
+      "zone": "sky",
+      "z": 8,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-03",
+      "file": "assets/living-world/star-03.svg",
+      "zone": "sky",
+      "z": 9,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-04",
+      "file": "assets/living-world/star-04.svg",
+      "zone": "sky",
+      "z": 10,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-05",
+      "file": "assets/living-world/star-05.svg",
+      "zone": "sky",
+      "z": 11,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "star-06",
+      "file": "assets/living-world/star-06.svg",
+      "zone": "sky",
+      "z": 12,
+      "motion": "twinkle",
+      "amplitude": "opacity .25",
+      "duration": "5-11s",
+      "anchor": null,
+      "mode": "night",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-01",
+      "file": "assets/living-world/cloud-01.svg",
+      "zone": "upper",
+      "z": 15,
+      "motion": "drift",
+      "amplitude": "x 4px",
+      "duration": "18s",
+      "anchor": [
+        80,
+        95
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-02",
+      "file": "assets/living-world/cloud-02.svg",
+      "zone": "upper",
+      "z": 16,
+      "motion": "drift",
+      "amplitude": "x 6px",
+      "duration": "21s",
+      "anchor": [
+        274,
+        143
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-03",
+      "file": "assets/living-world/cloud-03.svg",
+      "zone": "upper",
+      "z": 17,
+      "motion": "drift",
+      "amplitude": "x 8px",
+      "duration": "24s",
+      "anchor": [
+        177,
+        65
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-04",
+      "file": "assets/living-world/cloud-04.svg",
+      "zone": "upper",
+      "z": 18,
+      "motion": "drift",
+      "amplitude": "x 4px",
+      "duration": "27s",
+      "anchor": [
+        335,
+        211
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-05",
+      "file": "assets/living-world/cloud-05.svg",
+      "zone": "upper",
+      "z": 19,
+      "motion": "drift",
+      "amplitude": "x 6px",
+      "duration": "30s",
+      "anchor": [
+        20,
+        199
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cloud-06",
+      "file": "assets/living-world/cloud-06.svg",
+      "zone": "upper",
+      "z": 20,
+      "motion": "drift",
+      "amplitude": "x 8px",
+      "duration": "33s",
+      "anchor": [
+        241,
+        244
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "mountain-distant",
+      "file": "assets/living-world/mountain-distant.svg",
+      "zone": "horizon",
+      "z": 22,
+      "motion": "parallax",
+      "amplitude": "y 1px",
+      "duration": "24s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "mountain-near",
+      "file": "assets/living-world/mountain-near.svg",
+      "zone": "horizon",
+      "z": 23,
+      "motion": "parallax",
+      "amplitude": "y 1px",
+      "duration": "27s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "hill-back",
+      "file": "assets/living-world/hill-back.svg",
+      "zone": "middle",
+      "z": 24,
+      "motion": "parallax",
+      "amplitude": "y 2px",
+      "duration": "22s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "hill-middle",
+      "file": "assets/living-world/hill-middle.svg",
+      "zone": "middle",
+      "z": 25,
+      "motion": "parallax",
+      "amplitude": "y 2px",
+      "duration": "19s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "hill-front",
+      "file": "assets/living-world/hill-front.svg",
+      "zone": "lower",
+      "z": 26,
+      "motion": "parallax",
+      "amplitude": "y 3px",
+      "duration": "17s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "ground-lip",
+      "file": "assets/living-world/ground-lip.svg",
+      "zone": "lower",
+      "z": 27,
+      "motion": "still",
+      "amplitude": "none",
+      "duration": "none",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cottage-base",
+      "file": "assets/living-world/cottage-base.svg",
+      "zone": "middle",
+      "z": 30,
+      "motion": "still",
+      "amplitude": "none",
+      "duration": "none",
+      "anchor": [
+        248,
+        342
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cottage-roof",
+      "file": "assets/living-world/cottage-roof.svg",
+      "zone": "middle",
+      "z": 31,
+      "motion": "still",
+      "amplitude": "none",
+      "duration": "none",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cottage-door",
+      "file": "assets/living-world/cottage-door.svg",
+      "zone": "middle",
+      "z": 32,
+      "motion": "gentle-light",
+      "amplitude": "opacity .05",
+      "duration": "15s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "cottage-window",
+      "file": "assets/living-world/cottage-window.svg",
+      "zone": "middle",
+      "z": 33,
+      "motion": "window-glow",
+      "amplitude": "opacity .2",
+      "duration": "8s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "tree-01",
+      "file": "assets/living-world/tree-01.svg",
+      "zone": "middle",
+      "z": 34,
+      "motion": "sway",
+      "amplitude": "rotate 1.2deg",
+      "duration": "6.0s",
+      "anchor": [
+        53,
+        393
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "tree-02",
+      "file": "assets/living-world/tree-02.svg",
+      "zone": "middle",
+      "z": 35,
+      "motion": "sway",
+      "amplitude": "rotate 1.5deg",
+      "duration": "7.3s",
+      "anchor": [
+        118,
+        364
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "tree-03",
+      "file": "assets/living-world/tree-03.svg",
+      "zone": "middle",
+      "z": 36,
+      "motion": "sway",
+      "amplitude": "rotate 1.7999999999999998deg",
+      "duration": "8.6s",
+      "anchor": [
+        332,
+        391
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "tree-04",
+      "file": "assets/living-world/tree-04.svg",
+      "zone": "middle",
+      "z": 37,
+      "motion": "sway",
+      "amplitude": "rotate 2.0999999999999996deg",
+      "duration": "9.9s",
+      "anchor": [
+        354,
+        438
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "flower-01",
+      "file": "assets/living-world/flower-01.svg",
+      "zone": "foreground",
+      "z": 40,
+      "motion": "sway",
+      "amplitude": "rotate 1.0deg",
+      "duration": "5.0s",
+      "anchor": [
+        85,
+        455
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "flower-02",
+      "file": "assets/living-world/flower-02.svg",
+      "zone": "foreground",
+      "z": 41,
+      "motion": "sway",
+      "amplitude": "rotate 1.5deg",
+      "duration": "6.5s",
+      "anchor": [
+        145,
+        475
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "flower-03",
+      "file": "assets/living-world/flower-03.svg",
+      "zone": "foreground",
+      "z": 42,
+      "motion": "sway",
+      "amplitude": "rotate 2.0deg",
+      "duration": "8.0s",
+      "anchor": [
+        307,
+        463
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "flower-04",
+      "file": "assets/living-world/flower-04.svg",
+      "zone": "foreground",
+      "z": 43,
+      "motion": "sway",
+      "amplitude": "rotate 2.5deg",
+      "duration": "9.5s",
+      "anchor": [
+        362,
+        484
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "leaf-01",
+      "file": "assets/living-world/leaf-01.svg",
+      "zone": "foreground",
+      "z": 44,
+      "motion": "sway",
+      "amplitude": "rotate 1.0deg",
+      "duration": "4.0s",
+      "anchor": [
+        37,
+        484
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "leaf-02",
+      "file": "assets/living-world/leaf-02.svg",
+      "zone": "foreground",
+      "z": 45,
+      "motion": "sway",
+      "amplitude": "rotate 1.4deg",
+      "duration": "5.6s",
+      "anchor": [
+        177,
+        473
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "leaf-03",
+      "file": "assets/living-world/leaf-03.svg",
+      "zone": "foreground",
+      "z": 46,
+      "motion": "sway",
+      "amplitude": "rotate 1.8deg",
+      "duration": "7.2s",
+      "anchor": [
+        290,
+        496
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "leaf-04",
+      "file": "assets/living-world/leaf-04.svg",
+      "zone": "foreground",
+      "z": 47,
+      "motion": "sway",
+      "amplitude": "rotate 2.2deg",
+      "duration": "8.8s",
+      "anchor": [
+        374,
+        459
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "bird-01",
+      "file": "assets/living-world/bird-01.svg",
+      "zone": "sky-activity",
+      "z": 48,
+      "motion": "fly-episodic",
+      "amplitude": "x 25px y 8px",
+      "duration": "12-25s",
+      "anchor": [
+        96,
+        207
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "bird-02",
+      "file": "assets/living-world/bird-02.svg",
+      "zone": "sky-activity",
+      "z": 49,
+      "motion": "fly-episodic",
+      "amplitude": "x 25px y 8px",
+      "duration": "12-25s",
+      "anchor": [
+        300,
+        233
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "bird-03",
+      "file": "assets/living-world/bird-03.svg",
+      "zone": "sky-activity",
+      "z": 50,
+      "motion": "fly-episodic",
+      "amplitude": "x 25px y 8px",
+      "duration": "12-25s",
+      "anchor": [
+        185,
+        175
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "butterfly-01",
+      "file": "assets/living-world/butterfly-01.svg",
+      "zone": "activity",
+      "z": 51,
+      "motion": "flutter",
+      "amplitude": "rotate 3deg y 6px",
+      "duration": "8-15s",
+      "anchor": [
+        146,
+        398
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "butterfly-02",
+      "file": "assets/living-world/butterfly-02.svg",
+      "zone": "activity",
+      "z": 52,
+      "motion": "flutter",
+      "amplitude": "rotate 3deg y 6px",
+      "duration": "8-15s",
+      "anchor": [
+        325,
+        413
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "stream",
+      "file": "assets/living-world/stream.svg",
+      "zone": "lower",
+      "z": 53,
+      "motion": "shimmer",
+      "amplitude": "opacity .08",
+      "duration": "7s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "pond-stones",
+      "file": "assets/living-world/pond-stones.svg",
+      "zone": "lower",
+      "z": 54,
+      "motion": "still",
+      "amplitude": "none",
+      "duration": "none",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-petals",
+      "file": "assets/living-world/paper-petals.svg",
+      "zone": "activity",
+      "z": 55,
+      "motion": "fall-episodic",
+      "amplitude": "y 12px",
+      "duration": "14s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "rain-overlay",
+      "file": "assets/living-world/rain-overlay.svg",
+      "zone": "weather",
+      "z": 56,
+      "motion": "rain-episodic",
+      "amplitude": "y 10px",
+      "duration": "1.8s",
+      "anchor": null,
+      "mode": "event:rain",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "rainbow",
+      "file": "assets/living-world/rainbow.svg",
+      "zone": "weather",
+      "z": 57,
+      "motion": "fade-episodic",
+      "amplitude": "opacity .25",
+      "duration": "8s",
+      "anchor": null,
+      "mode": "event:rainbow",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "foreground-fringe",
+      "file": "assets/living-world/foreground-fringe.svg",
+      "zone": "foreground",
+      "z": 58,
+      "motion": "parallax",
+      "amplitude": "y 2px",
+      "duration": "22s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "foreground-tufts",
+      "file": "assets/living-world/foreground-tufts.svg",
+      "zone": "foreground",
+      "z": 59,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "9s",
+      "anchor": null,
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-01",
+      "file": "assets/living-world/paper-detail-01.svg",
+      "zone": "detail",
+      "z": 60,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "7s",
+      "anchor": [
+        31,
+        420
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-02",
+      "file": "assets/living-world/paper-detail-02.svg",
+      "zone": "detail",
+      "z": 61,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "8s",
+      "anchor": [
+        97,
+        439
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-03",
+      "file": "assets/living-world/paper-detail-03.svg",
+      "zone": "detail",
+      "z": 62,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "9s",
+      "anchor": [
+        151,
+        414
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-04",
+      "file": "assets/living-world/paper-detail-04.svg",
+      "zone": "detail",
+      "z": 63,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "10s",
+      "anchor": [
+        211,
+        385
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-05",
+      "file": "assets/living-world/paper-detail-05.svg",
+      "zone": "detail",
+      "z": 64,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "11s",
+      "anchor": [
+        264,
+        406
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-06",
+      "file": "assets/living-world/paper-detail-06.svg",
+      "zone": "detail",
+      "z": 65,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "12s",
+      "anchor": [
+        306,
+        433
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-07",
+      "file": "assets/living-world/paper-detail-07.svg",
+      "zone": "detail",
+      "z": 66,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "13s",
+      "anchor": [
+        353,
+        417
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    },
+    {
+      "id": "paper-detail-08",
+      "file": "assets/living-world/paper-detail-08.svg",
+      "zone": "detail",
+      "z": 67,
+      "motion": "sway",
+      "amplitude": "rotate 1deg",
+      "duration": "14s",
+      "anchor": [
+        183,
+        359
+      ],
+      "mode": "all",
+      "viewBox": "0 0 390 520"
+    }
+  ]
+}

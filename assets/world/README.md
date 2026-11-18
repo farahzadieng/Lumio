@@ -1,0 +1,1 @@
+REQUIRED: regenerate ALL premium environment assets from the art brief. No approved environment layers are currently in this directory. Rejected examples are in references/REJECTED_V2_ART_DO_NOT_USE. Never import those into the app.

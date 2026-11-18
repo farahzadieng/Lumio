@@ -1,0 +1,225 @@
+{
+  "version": "1.1",
+  "files": [
+    {
+      "path": "START_HERE.md",
+      "bytes": 2233
+    },
+    {
+      "path": "CODEX_MASTER_PROMPT.md",
+      "bytes": 4587
+    },
+    {
+      "path": "docs/05_TECH_ARCHITECTURE.md",
+      "bytes": 4123
+    },
+    {
+      "path": "docs/03_LIVING_WORLD_AND_CHARACTER.md",
+      "bytes": 5102
+    },
+    {
+      "path": "docs/04_MOTION_AND_NAVIGATION.md",
+      "bytes": 2585
+    },
+    {
+      "path": "docs/02_VISUAL_DESIGN_SYSTEM.md",
+      "bytes": 4405
+    },
+    {
+      "path": "docs/09_FINAL_CHARACTER_DECISION.md",
+      "bytes": 2337
+    },
+    {
+      "path": "docs/08_ASSET_MANIFEST.md",
+      "bytes": 2660
+    },
+    {
+      "path": "docs/07_ACCEPTANCE_AND_TESTS.md",
+      "bytes": 2867
+    },
+    {
+      "path": "docs/06_LIBRARY_GUIDE.md",
+      "bytes": 2501
+    },
+    {
+      "path": "docs/01_PRODUCT_AND_RULES.md",
+      "bytes": 3923
+    },
+    {
+      "path": "references/legacy-design-tokens.json",
+      "bytes": 424
+    },
+    {
+      "path": "references/approved-icon-original.png",
+      "bytes": 3044865
+    },
+    {
+      "path": "references/design-board.png",
+      "bytes": 2912132
+    },
+    {
+      "path": "references/legacy-character/original-sobo-reference.riv",
+      "bytes": 2744286
+    },
+    {
+      "path": "references/legacy-prototype/README.md",
+      "bytes": 1499
+    },
+    {
+      "path": "references/legacy-prototype/index.html",
+      "bytes": 19088
+    },
+    {
+      "path": "assets/icons/lumio-152.png",
+      "bytes": 38512
+    },
+    {
+      "path": "assets/icons/lumio-1024.png",
+      "bytes": 1859049
+    },
+    {
+      "path": "assets/icons/lumio-96.png",
+      "bytes": 16367
+    },
+    {
+      "path": "assets/icons/lumio-180.png",
+      "bytes": 53111
+    },
+    {
+      "path": "assets/icons/lumio-72.png",
+      "bytes": 9722
+    },
+    {
+      "path": "assets/icons/lumio-192.webp",
+      "bytes": 10546
+    },
+    {
+      "path": "assets/icons/lumio-original-square.png",
+      "bytes": 2759297
+    },
+    {
+      "path": "assets/icons/lumio-512.webp",
+      "bytes": 69236
+    },
+    {
+      "path": "assets/icons/lumio-144.png",
+      "bytes": 34846
+    },
+    {
+      "path": "assets/icons/lumio-32.png",
+      "bytes": 2447
+    },
+    {
+      "path": "assets/icons/lumio-256.png",
+      "bytes": 106024
+    },
+    {
+      "path": "assets/icons/lumio-512.png",
+      "bytes": 445670
+    },
+    {
+      "path": "assets/icons/lumio-16.png",
+      "bytes": 792
+    },
+    {
+      "path": "assets/icons/lumio-120.png",
+      "bytes": 24738
+    },
+    {
+      "path": "assets/icons/lumio-192.png",
+      "bytes": 60272
+    },
+    {
+      "path": "assets/icons/lumio-48.png",
+      "bytes": 4786
+    },
+    {
+      "path": "assets/icons/favicon.ico",
+      "bytes": 150739
+    },
+    {
+      "path": "assets/icons/lumio-384.png",
+      "bytes": 242222
+    },
+    {
+      "path": "assets/icons/lumio-167.png",
+      "bytes": 46070
+    },
+    {
+      "path": "assets/props/bloom.svg",
+      "bytes": 376
+    },
+    {
+      "path": "assets/props/seed.svg",
+      "bytes": 411
+    },
+    {
+      "path": "assets/props/flower.svg",
+      "bytes": 742
+    },
+    {
+      "path": "assets/props/cloud.svg",
+      "bytes": 254
+    },
+    {
+      "path": "assets/props/house.svg",
+      "bytes": 490
+    },
+    {
+      "path": "assets/props/tree.svg",
+      "bytes": 444
+    },
+    {
+      "path": "assets/props/sprout.svg",
+      "bytes": 372
+    },
+    {
+      "path": "assets/props/book.svg",
+      "bytes": 328
+    },
+    {
+      "path": "assets/props/growing.svg",
+      "bytes": 412
+    },
+    {
+      "path": "assets/props/butterfly.svg",
+      "bytes": 309
+    },
+    {
+      "path": "assets/world/hill-front.svg",
+      "bytes": 307
+    },
+    {
+      "path": "assets/world/sky-day.svg",
+      "bytes": 557
+    },
+    {
+      "path": "assets/world/hill-middle.svg",
+      "bytes": 308
+    },
+    {
+      "path": "assets/world/mountains-back.svg",
+      "bytes": 327
+    },
+    {
+      "path": "assets/world/sun.svg",
+      "bytes": 325
+    },
+    {
+      "path": "assets/world/sky-dawn.svg",
+      "bytes": 302
+    },
+    {
+      "path": "assets/world/cloud-back.svg",
+      "bytes": 345
+    },
+    {
+      "path": "assets/world/sky-evening.svg",
+      "bytes": 262
+    },
+    {
+      "path": "assets/character/paper-guest-happy-concept.gif",
+      "bytes": 318287
+    }
+  ]
+}

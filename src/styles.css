@@ -1,29 +1,27 @@
 @font-face {
-  font-family: Estedad;
-  src: url("/fonts/Estedad-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: Estedad;
-  src: url("/fonts/Estedad-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-display: swap;
-}
-@font-face {
-  font-family: Estedad;
-  src: url("/fonts/Estedad-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-display: swap;
-}
-@font-face {
-  font-family: Estedad;
-  src: url("/fonts/Estedad-Bold.woff2") format("woff2");
+  font-family: "Bon Persian One";
+  src: url("/fonts/Bon-Persian-One.woff2") format("woff2");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+06F1, U+0661;
+}
+@font-face {
+  font-family: "Bon";
+  src: url("/fonts/Bon-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Bon";
+  src: url("/fonts/Bon-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
   font-display: swap;
 }
 :root {
-  font-family: Estedad, system-ui, sans-serif;
+  font-family: "Bon Persian One", "Bon", system-ui, sans-serif;
   color: #33483d;
   background: #eee5d5;
   font-synthesis: none;
@@ -1672,4 +1670,303 @@ main {
 .world-lighting {
   position: absolute;
   inset: 0;
+}
+/* Immersive home and shared Bon typography. */
+:root {
+  font-family: "Bon Persian One", "Bon", system-ui, sans-serif;
+  font-weight: 700;
+  font-synthesis: none;
+}
+h1,
+h2,
+.brand {
+  font-weight: 900;
+}
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+.app-shell {
+  --navigation-height: calc(75px + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--navigation-height) + 20px);
+}
+.tab-today .page {
+  display: block !important;
+  padding: 0 !important;
+  min-height: 100svh;
+}
+.tab-today .home-world {
+  position: relative;
+  height: calc(100svh - var(--navigation-height) + 16px);
+  min-height: calc(100svh - var(--navigation-height) + 16px);
+  width: 100%;
+  margin: 0;
+  touch-action: pan-y;
+}
+.floating-date {
+  position: fixed;
+  z-index: 8;
+  top: calc(18px + env(safe-area-inset-top));
+  inset-inline-start: max(18px, calc((100vw - 504px) / 2));
+  font-size: 0.82rem;
+  color: #244b3d;
+  background: #fff9eac7;
+  border: 1px solid #fff9ee88;
+  border-radius: 14px;
+  padding: 8px 12px;
+  box-shadow:
+    0 2px 0 #bba77c60,
+    0 5px 18px #16382c14;
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+}
+.offline-indicator {
+  position: fixed;
+  z-index: 9;
+  top: calc(20px + env(safe-area-inset-top));
+  inset-inline-end: 20px;
+  color: #445842;
+  background: #fff9eae8;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  padding: 5px 10px;
+}
+.tab-today .today-panel {
+  position: relative;
+  margin: 0 12px 18px !important;
+  width: auto;
+  min-height: 220px;
+  padding: 14px 15px 22px;
+  border-radius: 27px 27px 20px 20px;
+  box-shadow:
+    0 5px 0 #d3bd94,
+    0 16px 32px #153d3b30;
+  scroll-margin-top: 96px;
+}
+.panel-grip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 30px;
+  min-height: 30px;
+  border: 0;
+  background: transparent;
+  margin: -5px 0 8px;
+  touch-action: manipulation;
+}
+.panel-grip span,
+.drawer-grip {
+  display: block;
+  width: 43px;
+  height: 5px;
+  border-radius: 999px;
+  background: #5b7e5b80;
+}
+.world-reveal {
+  position: absolute;
+  z-index: 2;
+  bottom: 35px;
+  left: calc(50% - 30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 60px;
+  height: 55px;
+  border: 1px solid #fffcdf80;
+  background: #fff9eac2;
+  color: #315e45;
+  box-shadow:
+    0 3px 0 #acb78e77,
+    0 7px 17px #153c3533;
+  border-radius: 22px;
+  backdrop-filter: blur(7px);
+  touch-action: pan-y;
+}
+.world-reveal .drawer-grip {
+  width: 28px;
+  height: 4px;
+}
+.world-reveal:active {
+  background: #fff9ee;
+}
+.world-reaction-layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 75%;
+}
+.scene-hotspot {
+  position: absolute;
+  z-index: 1;
+  width: 22%;
+  height: 15%;
+  min-width: 64px;
+  min-height: 64px;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+.scene-hotspot:focus-visible {
+  outline: 2px dashed #fff6d2;
+  outline-offset: 0;
+  background: #fff9e91c;
+}
+.hotspot-cloud {
+  top: 12%;
+  left: 66%;
+  width: 29%;
+  height: 15%;
+}
+.hotspot-leaves {
+  top: 47%;
+  left: 0;
+  width: 27%;
+  height: 20%;
+}
+.hotspot-river {
+  top: 73%;
+  left: 30%;
+  width: 35%;
+  height: 15%;
+}
+.scene-touch {
+  position: absolute;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.scene-touch > span {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #fff4d0;
+  border-radius: 50%;
+  box-shadow: 0 1px 8px #e4d1a588;
+}
+.content-page {
+  padding-top: calc(30px + env(safe-area-inset-top));
+  min-height: calc(100dvh - var(--navigation-height));
+}
+.page {
+  min-height: calc(100dvh - var(--navigation-height));
+}
+.bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom);
+  height: var(--navigation-height);
+}
+.bottom-nav button.active {
+  transform: translateY(-2px);
+  border-radius: 17px;
+  box-shadow: 0 2px 0 #90a77b;
+}
+.bottom-nav button:active {
+  transform: scale(0.92);
+}
+.dialog-content {
+  font-family: "Bon Persian One", "Bon", system-ui, sans-serif;
+}
+.rdp-root {
+  font-family: "Bon Persian One", "Bon", system-ui, sans-serif;
+}
+.field input,
+.field textarea {
+  font-size: 16px;
+  line-height: 1.7;
+}
+@media (min-width: 768px) {
+  .floating-date {
+    inset-inline-start: max(22px, calc((100vw - 856px) / 2));
+  }
+  .tab-today .today-panel {
+    max-width: 580px;
+    margin-inline: auto !important;
+  }
+  .tab-today .home-world {
+    min-height: calc(100svh - var(--navigation-height) + 16px);
+    height: calc(100svh - var(--navigation-height) + 16px);
+  }
+  .content-page {
+    max-width: 650px;
+  }
+}
+.bottom-nav button {
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+}
+.bottom-nav button.active {
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+.nav-selection {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 17px;
+  background: var(--paper-tint);
+  box-shadow: 0 2px 0 #90a77b;
+}
+.dialog-content {
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: 0;
+  margin-inline: auto;
+  transform: none;
+  width: min(100%, 540px);
+  max-height: 90dvh;
+  padding: 4px 24px calc(24px + env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
+  border-bottom: 0;
+  box-shadow:
+    0 -4px 0 #e1cfad,
+    0 -16px 50px #143a3638;
+  animation: sheetRise 0.27s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sheet-drag-grip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+  margin-bottom: 8px;
+  cursor: grab;
+}
+.sheet-drag-grip:active {
+  cursor: grabbing;
+}
+.sheet-drag-grip > span {
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: #82907770;
+}
+.dialog-content .dialog-x {
+  top: 40px;
+}
+.dialog-content h2 {
+  font-size: 1.25rem;
+}
+@keyframes sheetRise {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

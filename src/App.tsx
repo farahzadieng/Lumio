@@ -3,17 +3,27 @@ import {
   Suspense,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ChangeEvent,
 } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 import * as Dialog from "@radix-ui/react-dialog";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useAnimationControls,
+  useDragControls,
+  useMotionValue,
+  animate,
+  useReducedMotion,
+} from "motion/react";
 import {
   BookOpen,
   ChartNoAxesCombined,
   Check,
   ChevronLeft,
+  ChevronsUp,
   Download,
   House,
   Leaf,
@@ -118,7 +128,6 @@ const copy = {
     loading: "باز کردن دفتر محلی…",
     slot: "جای خالی",
     graduation: "مسیر ۲۱ روزه کامل شد!",
-    installAgain: "راهنمای نصب",
   },
   en: {
     app: "Lumio",
@@ -182,7 +191,6 @@ const copy = {
     loading: "Opening your local journal…",
     slot: "Open slot",
     graduation: "Your 21-day journey is complete!",
-    installAgain: "Install guide",
   },
 };
 const localeDate = (date: Date, locale: Locale) =>
@@ -193,15 +201,39 @@ const localeDate = (date: Date, locale: Locale) =>
   }).format(date);
 const num = (v: number, locale: Locale) =>
   new Intl.NumberFormat(locale === "fa" ? "fa-IR" : "en-US").format(v);
+type SceneReaction = { kind: "cloud" | "leaves" | "river"; id: number };
+
 function Scene({
   mode,
   reduced,
   locale,
+  reaction,
 }: {
   mode: "dawn" | "day" | "dusk" | "night";
   reduced: boolean;
   locale: Locale;
+  reaction: SceneReaction | null;
 }) {
+  const cloudControls = useAnimationControls();
+  const leafControls = useAnimationControls();
+  useEffect(() => {
+    if (!reaction || reduced) return;
+    const controls = reaction.kind === "cloud" ? cloudControls : leafControls;
+    void controls.start(
+      reaction.kind === "cloud"
+        ? {
+            x: [0, 14, -5, 0],
+            y: [0, -8, 2, 0],
+            transition: { duration: 1.1, ease: "easeInOut" },
+          }
+        : {
+            rotate: [0, -1.4, 1, 0],
+            scale: [1, 1.018, 1],
+            transition: { duration: 0.9, ease: "easeInOut" },
+          },
+    );
+    return () => controls.stop();
+  }, [reaction, reduced, cloudControls, leafControls]);
   const [visible, setVisible] = useState(!document.hidden);
   useEffect(() => {
     const update = () => setVisible(!document.hidden);
@@ -232,24 +264,28 @@ function Scene({
             src={`/art/${mode}-background.webp`}
             alt=""
           />
-          {[0, 1, 2, 3].map((i) => (
+          <motion.div className="world-reaction-layer" animate={cloudControls}>
+            {[0, 1, 2, 3].map((i) => (
+              <img
+                key={i}
+                className={`world-plane cloud-piece cloud-${i}`}
+                src={`/art/${mode}-sky.webp`}
+                alt=""
+              />
+            ))}
+          </motion.div>
+          <motion.div className="world-reaction-layer" animate={leafControls}>
             <img
-              key={i}
-              className={`world-plane cloud-piece cloud-${i}`}
-              src={`/art/${mode}-sky.webp`}
+              className="world-plane world-trees"
+              src={`/art/${mode}-midground.webp`}
               alt=""
             />
-          ))}
-          <img
-            className="world-plane world-trees"
-            src={`/art/${mode}-midground.webp`}
-            alt=""
-          />
-          <img
-            className="world-plane world-leaves"
-            src={`/art/${mode}-foreground.webp`}
-            alt=""
-          />
+            <img
+              className="world-plane world-leaves"
+              src={`/art/${mode}-foreground.webp`}
+              alt=""
+            />
+          </motion.div>
         </motion.div>
       </AnimatePresence>
       <span className="world-description">
@@ -258,6 +294,93 @@ function Scene({
     </div>
   );
 }
+function HomeWorld({
+  locale,
+  reduced,
+  onReact,
+  onReveal,
+}: {
+  locale: Locale;
+  reduced: boolean;
+  onReact: (kind: SceneReaction["kind"]) => void;
+  onReveal: () => void;
+}) {
+  const [touch, setTouch] = useState<{
+    x: number;
+    y: number;
+    id: number;
+  } | null>(null);
+  const targets = [
+    {
+      kind: "cloud" as const,
+      label: locale === "fa" ? "نوازش ابرها" : "Flutter the clouds",
+    },
+    {
+      kind: "leaves" as const,
+      label: locale === "fa" ? "تکان دادن برگ‌ها" : "Rustle the leaves",
+    },
+    {
+      kind: "river" as const,
+      label: locale === "fa" ? "موج روی رودخانه" : "Ripple the stream",
+    },
+  ];
+  return (
+    <div className="hero home-world">
+      {targets.map((target) => (
+        <motion.button
+          key={target.kind}
+          className={`scene-hotspot hotspot-${target.kind}`}
+          aria-label={target.label}
+          whileTap={{ scale: 0.9 }}
+          onClick={(event) => {
+            const bounds =
+              event.currentTarget.parentElement!.getBoundingClientRect();
+            const targetBounds = event.currentTarget.getBoundingClientRect();
+            setTouch({
+              x: targetBounds.left - bounds.left + targetBounds.width / 2,
+              y: targetBounds.top - bounds.top + targetBounds.height / 2,
+              id: Date.now(),
+            });
+            onReact(target.kind);
+          }}
+        />
+      ))}
+      {touch && (
+        <div
+          className="scene-touch"
+          key={touch.id}
+          style={{ left: touch.x, top: touch.y }}
+          aria-hidden="true"
+        >
+          {[0, 1, 2].map((index) => (
+            <motion.span
+              key={index}
+              initial={{ scale: 0.25, opacity: 0.8 }}
+              animate={{ scale: reduced ? 1 : 2.3 + index * 0.5, opacity: 0 }}
+              transition={{
+                duration: reduced ? 0.1 : 1,
+                delay: reduced ? 0 : index * 0.12,
+              }}
+            />
+          ))}
+        </div>
+      )}
+      <motion.button
+        className="world-reveal"
+        onClick={onReveal}
+        aria-label={
+          locale === "fa" ? "نمایش عادت‌های امروز" : "Show today’s habits"
+        }
+        animate={reduced ? {} : { y: [0, -5, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <ChevronsUp size={22} />
+        <span className="drawer-grip" />
+      </motion.button>
+    </div>
+  );
+}
+
 function Celebration({ emoji }: { emoji: string }) {
   return (
     <div className="celebration" aria-hidden="true">
@@ -360,20 +483,56 @@ function Sheet({
   children,
 }: {
   open: boolean;
-  onOpenChange: (o: boolean) => void;
+  onOpenChange: (open: boolean) => void;
   title: string;
   children: React.ReactNode;
 }) {
+  const dragControls = useDragControls();
+  const offset = useMotionValue(0);
+  const reduced = useReducedMotion();
+  useEffect(() => {
+    if (open) offset.set(0);
+  }, [open, offset]);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="dialog-overlay" />
-        <Dialog.Content className="dialog-content">
-          <Dialog.Title>{title}</Dialog.Title>
-          <Dialog.Close className="dialog-x" aria-label="Close / بستن">
-            <X size={20} />
-          </Dialog.Close>
-          {children}
+        <Dialog.Content asChild>
+          <motion.div
+            className="dialog-content"
+            style={{ y: offset }}
+            drag="y"
+            dragListener={false}
+            dragControls={dragControls}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.55 }}
+            onDragEnd={(_, info) => {
+              if (info.offset.y > 90 || info.velocity.y > 700)
+                onOpenChange(false);
+              else
+                void animate(
+                  offset,
+                  0,
+                  reduced
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 420, damping: 34 },
+                );
+            }}
+          >
+            <button
+              className="sheet-drag-grip"
+              aria-label="Close panel / بستن پنل"
+              onPointerDown={(event) => dragControls.start(event)}
+              onClick={() => onOpenChange(false)}
+            >
+              <span />
+            </button>
+            <Dialog.Title>{title}</Dialog.Title>
+            <Dialog.Close className="dialog-x" aria-label="Close / بستن">
+              <X size={20} />
+            </Dialog.Close>
+            {children}
+          </motion.div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
@@ -405,6 +564,30 @@ export default function App() {
     [celebrate, setCelebrate] = useState(""),
     [pendingBackup, setPendingBackup] = useState<Backup | null>(null);
   const [pageDirection, setPageDirection] = useState(1);
+  const [sceneReaction, setSceneReaction] = useState<SceneReaction | null>(
+    null,
+  );
+  const habitPanelRef = useRef<HTMLElement>(null);
+  const scrollPositions = useRef<Partial<Record<Tab, number>>>({});
+  useEffect(() => {
+    const timer = setTimeout(
+      () =>
+        window.scrollTo({
+          top: scrollPositions.current[tab] || 0,
+          behavior: "instant",
+        }),
+      160,
+    );
+    return () => clearTimeout(timer);
+  }, [tab]);
+  function revealHabits() {
+    const panel = habitPanelRef.current;
+    if (panel)
+      window.scrollTo({
+        top: window.scrollY + panel.getBoundingClientRect().top - 96,
+        behavior: reduced ? "instant" : "smooth",
+      });
+  }
   const [reduceOverride, setReduceOverride] = useState(
     localStorage.getItem("lumio-reduce-motion") === "1",
   );
@@ -490,6 +673,7 @@ export default function App() {
   );
   function go(next: Tab) {
     if (next === tab) return;
+    scrollPositions.current[tab] = window.scrollY;
     setPageDirection(tabs.indexOf(next) > tabs.indexOf(tab) ? 1 : -1);
     location.hash = next;
     setTab(next);
@@ -572,21 +756,28 @@ export default function App() {
       dir={locale === "fa" ? "rtl" : "ltr"}
       lang={locale}
     >
-      <Scene mode={mode} reduced={reduced} locale={locale} />
+      <Scene
+        mode={mode}
+        reduced={reduced}
+        locale={locale}
+        reaction={sceneReaction}
+      />
       {celebrate && !reduced && (
         <Celebration key={celebrate} emoji={celebrate} />
       )}
       <a className="skip-link" href="#main">
         {locale === "fa" ? "رفتن به محتوا" : "Skip to content"}
       </a>
-      <header className="topbar">
-        <div className="brand">
-          <img src="/icons/lumio-120.png" alt="" />
-          <span>{t.app}</span>
-        </div>
-        <span className="date-pill">{localeDate(clock, locale)}</span>
-        {!online && <span className="offline-pill">{t.offline}</span>}
-      </header>
+      {tab === "today" && (
+        <time className="floating-date" dateTime={dayKey(clock)}>
+          {localeDate(clock, locale)}
+        </time>
+      )}
+      {!online && (
+        <span className="offline-indicator" role="status">
+          {t.offline}
+        </span>
+      )}
       <main id="main">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -597,7 +788,7 @@ export default function App() {
                 ? { opacity: 0 }
                 : {
                     opacity: 0,
-                    rotateY: pageDirection * (locale === "fa" ? 12 : -12),
+                    rotateY: 0,
                     x: pageDirection * (locale === "fa" ? -35 : 35),
                     y: 12,
                     scale: 0.97,
@@ -609,7 +800,7 @@ export default function App() {
                 ? { opacity: 0 }
                 : {
                     opacity: 0,
-                    rotateY: pageDirection * (locale === "fa" ? -12 : 12),
+                    rotateY: 0,
                     x: pageDirection * (locale === "fa" ? 30 : -30),
                     scale: 0.98,
                     transition: { duration: 0.13 },
@@ -622,14 +813,35 @@ export default function App() {
           >
             {tab === "today" && (
               <>
-                <div className="hero">
-                  <div className="hero-caption">
-                    <span className="eyebrow">LUMIO · {t.today}</span>
-                    <h1>{t.welcome}</h1>
-                    <p>{t.welcomeSub}</p>
-                  </div>
-                </div>
-                <section className="today-panel">
+                <HomeWorld
+                  locale={locale}
+                  reduced={reduced}
+                  onReact={(kind) => setSceneReaction({ kind, id: Date.now() })}
+                  onReveal={revealHabits}
+                />
+                <motion.section
+                  id="today-habits"
+                  ref={habitPanelRef}
+                  className="today-panel"
+                  initial={reduced ? false : { opacity: 0, y: 32 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.05 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 27 }}
+                >
+                  <button
+                    className="panel-grip"
+                    aria-label={
+                      locale === "fa" ? "بازگشت به صحنه" : "Return to the world"
+                    }
+                    onClick={() =>
+                      window.scrollTo({
+                        top: 0,
+                        behavior: reduced ? "instant" : "smooth",
+                      })
+                    }
+                  >
+                    <span />
+                  </button>
                   <div className="section-heading">
                     <div>
                       <span className="eyebrow">
@@ -672,12 +884,7 @@ export default function App() {
                       ))}
                     </div>
                   )}
-                  {active.length >= 3 && <p className="helper">{t.full}</p>}
-                  {active.length > 0 &&
-                    active.every((h) =>
-                      completedOn(h.id, dayKey(), completions),
-                    ) && <p className="success-note">{t.allDone}</p>}
-                </section>
+                </motion.section>
               </>
             )}
             {tab === "journey" && (
@@ -994,12 +1201,6 @@ export default function App() {
                     ))}
                   </div>
                 )}
-                <button
-                  className="text-button"
-                  onClick={() => setInstallGuide(true)}
-                >
-                  {t.installAgain}
-                </button>
               </section>
             )}
           </motion.div>
@@ -1009,15 +1210,27 @@ export default function App() {
         {tabs.map((id, i) => {
           const Icon = [House, BookOpen, ChartNoAxesCombined, Menu][i];
           return (
-            <button
+            <motion.button
               key={id}
+              whileTap={reduced ? {} : { scale: 0.9 }}
               className={tab === id ? "active" : ""}
               aria-current={tab === id ? "page" : undefined}
               onClick={() => go(id)}
             >
+              {tab === id && (
+                <motion.span
+                  className="nav-selection"
+                  layoutId="selected-tab"
+                  transition={
+                    reduced
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 420, damping: 34 }
+                  }
+                />
+              )}
               <Icon size={22} strokeWidth={tab === id ? 2.4 : 1.8} />
               <span>{t[id]}</span>
-            </button>
+            </motion.button>
           );
         })}
       </nav>

@@ -14,4 +14,4 @@ Habit data is stored in browser IndexedDB. Export a JSON backup from Profile bef
 
 The runtime scene uses only new art in `public/art/`. Nothing from `references/REJECTED_V2_ART_DO_NOT_USE/` is imported. Approved icons are copied from `assets/icons/`. Existing character animations remain in `assets/paper-guest/` and are not shown pending visual integration.
 
-Estedad body fonts are hosted locally under the SIL OFL 1.1 (`public/fonts/OFL.txt`). The requested Mad/Dots display variant has not been supplied or verified, so the app does not simulate it.
+Typography uses the user-supplied Bon font files hosted in `public/fonts/`. Inspection found static weights 700 in WOFF2 and 900 in WOFF. A small Unicode-restricted face maps Persian one to the existing vertical-one outline in Bon, preserving Persian text values. `scripts/fix_bon_digit.py` reproduces this compatibility face with fontTools and Brotli. Runtime and build use the committed font files directly.

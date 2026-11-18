@@ -6,3 +6,4 @@ test-results/
 *.local
 tsconfig.tsbuildinfo
 /.DS_Store/
+test-artifacts/

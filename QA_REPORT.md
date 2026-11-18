@@ -41,3 +41,15 @@ The user requested full-screen scenery, a cohesive colorful paper UI, stronger r
 - Chrome desktop requestAnimationFrame sampling over 90 intervals measured median and 95th percentile around 16.7ms. This is a desktop observation. Physical mobile frame pacing remains unmeasured.
 - Production offline reload retained habit data and loaded the calendar after Service Worker control.
 - Updated evidence is in `test-artifacts/redesign-*.png`, `redesign-results.json`, and the scripts `test-redesign.mjs`, `test-yesterday.mjs`, `test-motion.mjs`.
+
+
+## Immersive home and Bon typography — 2026-11-19
+
+- Home header and introductory text were removed. The date floats in a corner. At 390×844 the first habit card starts at y=891, below the initial viewport. Measured card positions also remain below the initial viewport at 320×690 and 844×390. No horizontal overflow was observed.
+- Habit panel reveal uses scrolling with spring entry. Each tab retains its scroll position. A test scrolled home to 274px, visited two other tabs, and returned to the same 274px offset.
+- Scene touch targets give cloud/foliage feedback using current grouped planes. Forms open as bottom sheets, and dragging the handle 150px dismissed the create form. The active navigation surface moves between tabs with a shared spring transition.
+- The Install guide entry was removed from Profile. First-launch install onboarding remains available.
+- Supplied `bVF.woff2` has Bon weight 700 and `bVF.woff` has weight 900. Both have no fvar axes. Bon replaces Estedad throughout runtime, including forms and calendars. Former font files were moved to `references/previous-fonts/`.
+- The supplied Persian-one glyph has a Latin-like flag. A two-codepoint compatibility face uses the existing vertical-one outline from Bon 700 for U+06F1 and U+0661. Source text remains Persian. Chrome confirmed the actual check-in counter uses `Bon Persian One` for one glyph and `bon SemiBold` for the remaining glyphs. The fix source is `scripts/fix_bon_digit.py`.
+- Build and 11 unit/IndexedDB tests passed. Browser checks found zero headers or home h1s, zero Profile install-guide buttons, expected scene reaction transforms, no page errors, and successful offline habit/calendar reload.
+- Screenshots and measurements are in `test-artifacts/immersive-*.png` and `immersive-results.json`. Browser automation is in `test-immersive.mjs` and `test-sheet.mjs`.

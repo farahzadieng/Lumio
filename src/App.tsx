@@ -23,7 +23,6 @@ import {
   ChartNoAxesCombined,
   Check,
   ChevronLeft,
-  ChevronsUp,
   Download,
   House,
   Leaf,
@@ -201,7 +200,7 @@ const localeDate = (date: Date, locale: Locale) =>
   }).format(date);
 const num = (v: number, locale: Locale) =>
   new Intl.NumberFormat(locale === "fa" ? "fa-IR" : "en-US").format(v);
-type SceneReaction = { kind: "cloud" | "leaves" | "river"; id: number };
+type SceneReaction = { kind: "cloud" | "flower" | "river"; id: number };
 
 function Scene({
   mode,
@@ -215,25 +214,37 @@ function Scene({
   reaction: SceneReaction | null;
 }) {
   const cloudControls = useAnimationControls();
-  const leafControls = useAnimationControls();
+  const flowerControls = useAnimationControls();
+  const riverControls = useAnimationControls();
   useEffect(() => {
     if (!reaction || reduced) return;
-    const controls = reaction.kind === "cloud" ? cloudControls : leafControls;
+    const controls =
+      reaction.kind === "cloud"
+        ? cloudControls
+        : reaction.kind === "flower"
+          ? flowerControls
+          : riverControls;
     void controls.start(
       reaction.kind === "cloud"
         ? {
-            x: [0, 14, -5, 0],
-            y: [0, -8, 2, 0],
-            transition: { duration: 1.1, ease: "easeInOut" },
+            x: [0, 10, -3, 0],
+            y: [0, -6, 1, 0],
+            transition: { duration: 1.15, ease: "easeInOut" },
           }
-        : {
-            rotate: [0, -1.4, 1, 0],
-            scale: [1, 1.018, 1],
-            transition: { duration: 0.9, ease: "easeInOut" },
-          },
+        : reaction.kind === "flower"
+          ? {
+              rotate: [0, -7, 5, 0],
+              transition: { duration: 0.8, ease: "easeInOut" },
+            }
+          : {
+              x: [0, 7, -2, 0],
+              opacity: [0.65, 1, 0.72, 0.65],
+              transition: { duration: 0.85, ease: "easeInOut" },
+            },
     );
     return () => controls.stop();
-  }, [reaction, reduced, cloudControls, leafControls]);
+  }, [reaction, reduced, cloudControls, flowerControls, riverControls]);
+  const dailyEvent = [...dayKey()].reduce((seed, char) => seed + char.charCodeAt(0), 0) % 2;
   const [visible, setVisible] = useState(!document.hidden);
   useEffect(() => {
     const update = () => setVisible(!document.hidden);
@@ -259,33 +270,32 @@ function Scene({
             src={`/art/${mode}-background.webp`}
             alt=""
           />
-          <img
-            className="world-plane world-mountains"
-            src={`/art/${mode}-background.webp`}
-            alt=""
-          />
-          <motion.div className="world-reaction-layer" animate={cloudControls}>
-            {[0, 1, 2, 3].map((i) => (
-              <img
-                key={i}
-                className={`world-plane cloud-piece cloud-${i}`}
-                src={`/art/${mode}-sky.webp`}
-                alt=""
-              />
-            ))}
-          </motion.div>
-          <motion.div className="world-reaction-layer" animate={leafControls}>
-            <img
-              className="world-plane world-trees"
-              src={`/art/${mode}-midground.webp`}
-              alt=""
-            />
-            <img
-              className="world-plane world-leaves"
-              src={`/art/${mode}-foreground.webp`}
-              alt=""
-            />
-          </motion.div>
+          <img className="world-plane world-sky" src={`/art/${mode}-sky.webp`} alt="" />
+          <img className="world-plane world-trees" src={`/art/${mode}-midground.webp`} alt="" />
+          <div className="living-cloud cloud-near">
+            <motion.img animate={cloudControls} src="/art/living/drift-cloud.webp" alt="" />
+          </div>
+          <div className="living-cloud cloud-far" aria-hidden="true">
+            <img src="/art/living/drift-cloud.webp" alt="" />
+          </div>
+          <span className="living-window-glow" />
+          <img className="world-plane world-leaves" src={`/art/${mode}-foreground.webp`} alt="" />
+          <div className="living-sprig sprig-left">
+            <img src="/art/living/leaf-sprig.webp" alt="" />
+          </div>
+          <div className="living-sprig sprig-right" aria-hidden="true">
+            <img src="/art/living/leaf-sprig.webp" alt="" />
+          </div>
+          <div className="living-flower">
+            <motion.img animate={flowerControls} src="/art/living/coral-flower.webp" alt="" />
+          </div>
+          <div className="living-river-glint">
+            <motion.span animate={riverControls} />
+          </div>
+          {mode !== "night" && dailyEvent === 0 &&
+            <img className="living-bird" src="/art/living/songbird.webp" alt="" />}
+          {mode !== "night" && dailyEvent === 1 &&
+            <img className="living-butterfly" src="/art/living/butterfly.webp" alt="" />}
         </motion.div>
       </AnimatePresence>
       <span className="world-description">
@@ -297,13 +307,15 @@ function Scene({
 function HomeWorld({
   locale,
   reduced,
+  mode,
+  reaction,
   onReact,
-  onReveal,
 }: {
   locale: Locale;
   reduced: boolean;
+  mode: "dawn" | "day" | "dusk" | "night";
+  reaction: SceneReaction | null;
   onReact: (kind: SceneReaction["kind"]) => void;
-  onReveal: () => void;
 }) {
   const [touch, setTouch] = useState<{
     x: number;
@@ -316,8 +328,8 @@ function HomeWorld({
       label: locale === "fa" ? "نوازش ابرها" : "Flutter the clouds",
     },
     {
-      kind: "leaves" as const,
-      label: locale === "fa" ? "تکان دادن برگ‌ها" : "Rustle the leaves",
+      kind: "flower" as const,
+      label: locale === "fa" ? "نوازش گل" : "Sway the flower",
     },
     {
       kind: "river" as const,
@@ -326,6 +338,11 @@ function HomeWorld({
   ];
   return (
     <div className="hero home-world">
+      <Scene mode={mode} reduced={reduced} locale={locale} reaction={reaction} />
+      <div className="scene-masthead" aria-hidden="true">
+        <img src="/icons/lumio-120.png" alt="" />
+        <span>{locale === "fa" ? "لومیو" : "Lumio"}</span>
+      </div>
       {targets.map((target) => (
         <motion.button
           key={target.kind}
@@ -365,18 +382,6 @@ function HomeWorld({
           ))}
         </div>
       )}
-      <motion.button
-        className="world-reveal"
-        onClick={onReveal}
-        aria-label={
-          locale === "fa" ? "نمایش عادت‌های امروز" : "Show today’s habits"
-        }
-        animate={reduced ? {} : { y: [0, -5, 0] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <ChevronsUp size={22} />
-        <span className="drawer-grip" />
-      </motion.button>
     </div>
   );
 }
@@ -567,7 +572,6 @@ export default function App() {
   const [sceneReaction, setSceneReaction] = useState<SceneReaction | null>(
     null,
   );
-  const habitPanelRef = useRef<HTMLElement>(null);
   const scrollPositions = useRef<Partial<Record<Tab, number>>>({});
   useEffect(() => {
     const timer = setTimeout(
@@ -580,14 +584,6 @@ export default function App() {
     );
     return () => clearTimeout(timer);
   }, [tab]);
-  function revealHabits() {
-    const panel = habitPanelRef.current;
-    if (panel)
-      window.scrollTo({
-        top: window.scrollY + panel.getBoundingClientRect().top - 96,
-        behavior: reduced ? "instant" : "smooth",
-      });
-  }
   const [reduceOverride, setReduceOverride] = useState(
     localStorage.getItem("lumio-reduce-motion") === "1",
   );
@@ -702,6 +698,7 @@ export default function App() {
     void run(async () => {
       await checkIn(h.id, forDay);
       setCelebrate(h.emoji || "🌱");
+      setSceneReaction({ kind: "flower", id: Date.now() });
       setTimeout(() => setCelebrate(""), 1250);
     });
   }
@@ -756,12 +753,6 @@ export default function App() {
       dir={locale === "fa" ? "rtl" : "ltr"}
       lang={locale}
     >
-      <Scene
-        mode={mode}
-        reduced={reduced}
-        locale={locale}
-        reaction={sceneReaction}
-      />
       {celebrate && !reduced && (
         <Celebration key={celebrate} emoji={celebrate} />
       )}
@@ -816,12 +807,12 @@ export default function App() {
                 <HomeWorld
                   locale={locale}
                   reduced={reduced}
+                  mode={mode}
+                  reaction={sceneReaction}
                   onReact={(kind) => setSceneReaction({ kind, id: Date.now() })}
-                  onReveal={revealHabits}
                 />
                 <motion.section
                   id="today-habits"
-                  ref={habitPanelRef}
                   className="today-panel"
                   initial={reduced ? false : { opacity: 0, y: 32 }}
                   whileInView={{ opacity: 1, y: 0 }}

@@ -33,6 +33,22 @@ export async function initDB() {
 export async function updateSettings(patch: Partial<Settings>) {
   await db.settings.update("main", patch);
 }
+export async function resetAllData() {
+  await db.transaction(
+    "rw",
+    db.habits,
+    db.completions,
+    db.milestones,
+    db.settings,
+    async () => {
+      await db.habits.clear();
+      await db.completions.clear();
+      await db.milestones.clear();
+      await db.settings.clear();
+      await db.settings.put(defaultSettings);
+    },
+  );
+}
 export async function createHabit(title: string, note = "", emoji = "🌱") {
   const clean = title.trim();
   if (!clean || clean.length > 80)

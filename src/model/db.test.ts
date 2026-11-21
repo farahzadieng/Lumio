@@ -1,6 +1,6 @@
 import "fake-indexeddb/auto";
 import { beforeEach, afterAll, describe, it, expect } from "vitest";
-import { db, initDB, createHabit, checkIn, undoToday } from "./db";
+import { db, initDB, createHabit, checkIn, undoToday, resetAllData, updateSettings } from "./db";
 import { dayKey, shiftDay, currentStreak } from "./habits";
 import { makeBackup, validateBackup, importBackup } from "./backup";
 const now = new Date();
@@ -105,5 +105,19 @@ describe("IndexedDB habit transactions", () => {
     expect(validateBackup(backup).habits[0].emoji).toBe("📚");
     delete backup.habits[0].emoji;
     expect(validateBackup(backup).habits[0].emoji).toBeUndefined();
+  });
+  it("resets habits, history, milestones, and onboarding settings together", async () => {
+    const habit = await createHabit("Read");
+    await checkIn(habit.id);
+    await updateSettings({ onboarded: true, locale: "en" });
+    await resetAllData();
+    expect(await db.habits.count()).toBe(0);
+    expect(await db.completions.count()).toBe(0);
+    expect(await db.milestones.count()).toBe(0);
+    expect(await db.settings.count()).toBe(1);
+    expect(await db.settings.get("main")).toMatchObject({
+      onboarded: false,
+      locale: "fa",
+    });
   });
 });

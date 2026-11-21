@@ -8,6 +8,7 @@ import {
   type ChangeEvent,
 } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
+import Onboarding from "./components/Onboarding";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
   AnimatePresence,
@@ -22,7 +23,6 @@ import {
   BookOpen,
   ChartNoAxesCombined,
   Check,
-  ChevronLeft,
   Download,
   House,
   Leaf,
@@ -41,6 +41,7 @@ import {
   checkIn,
   undoToday,
   archiveHabit,
+  resetAllData,
 } from "./model/db";
 import {
   dayKey,
@@ -127,6 +128,10 @@ const copy = {
     loading: "باز کردن دفتر محلی…",
     slot: "جای خالی",
     graduation: "مسیر ۲۱ روزه کامل شد!",
+    toInsights: "افزودن عادت از نگاه من",
+    reset: "شروع دوباره و حذف همهٔ داده‌ها",
+    resetWarning: "همهٔ عادت‌ها، ثبت‌ها، تاریخچه و تنظیمات این مرورگر پاک می‌شوند و راه‌اندازی اولیه دوباره آغاز می‌شود. اگر داده‌ها را لازم داری، اول خروجی پشتیبان بگیر.",
+    resetConfirm: "حذف همه و شروع دوباره",
   },
   en: {
     app: "Lumio",
@@ -190,6 +195,10 @@ const copy = {
     loading: "Opening your local journal…",
     slot: "Open slot",
     graduation: "Your 21-day journey is complete!",
+    toInsights: "Add a habit from Insights",
+    reset: "Reset app and erase all data",
+    resetWarning: "All habits, check-ins, history and settings in this browser will be erased, then onboarding will start again. Export a backup first if you need this data.",
+    resetConfirm: "Erase all and start over",
   },
 };
 const localeDate = (date: Date, locale: Locale) =>
@@ -270,7 +279,13 @@ function Scene({
             src={`/art/${mode}-background.webp`}
             alt=""
           />
+          <img
+            className="world-plane world-mountains"
+            src={`/art/${mode}-background.webp`}
+            alt=""
+          />
           <img className="world-plane world-sky" src={`/art/${mode}-sky.webp`} alt="" />
+          <span className="living-sun-haze" />
           <img className="world-plane world-trees" src={`/art/${mode}-midground.webp`} alt="" />
           <div className="living-cloud cloud-near">
             <motion.img animate={cloudControls} src="/art/living/drift-cloud.webp" alt="" />
@@ -310,13 +325,16 @@ function HomeWorld({
   mode,
   reaction,
   onReact,
+  onReveal,
 }: {
   locale: Locale;
   reduced: boolean;
   mode: "dawn" | "day" | "dusk" | "night";
   reaction: SceneReaction | null;
   onReact: (kind: SceneReaction["kind"]) => void;
+  onReveal: () => void;
 }) {
+  const touchStart = useRef<number | null>(null);
   const [touch, setTouch] = useState<{
     x: number;
     y: number;
@@ -337,7 +355,15 @@ function HomeWorld({
     },
   ];
   return (
-    <div className="hero home-world">
+    <div
+      className="hero home-world"
+      onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientY ?? null; }}
+      onTouchEnd={(event) => {
+        if (touchStart.current !== null && touchStart.current - (event.changedTouches[0]?.clientY ?? touchStart.current) > 45) onReveal();
+        touchStart.current = null;
+      }}
+      onWheel={(event) => { if (event.deltaY > 25) onReveal(); }}
+    >
       <Scene mode={mode} reduced={reduced} locale={locale} reaction={reaction} />
       <div className="scene-masthead" aria-hidden="true">
         <img src="/icons/lumio-120.png" alt="" />
@@ -428,13 +454,23 @@ function HabitCard({
   locale,
   onDone,
   onUndo,
+  busy,
+  reduced,
 }: {
   habit: Habit;
   completions: Completion[];
   locale: Locale;
-  onDone: () => void;
+  onDone: () => Promise<boolean>;
   onUndo: () => void;
+  busy: boolean;
+  reduced: boolean;
 }) {
+  const [burst, setBurst] = useState(0);
+  useEffect(() => {
+    if (!burst) return;
+    const timer = window.setTimeout(() => setBurst(0), 1050);
+    return () => window.clearTimeout(timer);
+  }, [burst]);
   const t = copy[locale];
   const checked = completedOn(habit.id, dayKey(), completions);
   const streak = currentStreak(
@@ -471,13 +507,39 @@ function HabitCard({
         whileTap={{ scale: 0.8, rotate: -12 }}
         animate={checked ? { scale: [1, 1.2, 1] } : { scale: 1 }}
         className={`check-button ${checked ? "checked" : ""}`}
-        onClick={checked ? onUndo : onDone}
+        disabled={busy}
+        onClick={checked ? onUndo : async () => {
+          if (await onDone() && !reduced) setBurst(Date.now());
+        }}
         aria-label={
           checked ? `${t.undo}: ${habit.title}` : `${t.done}: ${habit.title}`
         }
       >
         <Check size={23} />
       </motion.button>
+      {burst > 0 && (
+        <span className="habit-burst" key={burst} aria-hidden="true">
+          {Array.from({ length: 8 }, (_, index) => (
+            <motion.span
+              key={index}
+              className="habit-burst-petal"
+              style={{ background: ["#f8c270", "#e59a7d", "#b8dc9d", "#f8e7a9"][index % 4] }}
+              initial={{ x: 0, y: 0, scale: 0, opacity: 1, rotate: 0 }}
+              animate={{
+                x: Math.cos((index * Math.PI) / 4) * 48,
+                y: Math.sin((index * Math.PI) / 4) * 42,
+                scale: [0, 1.25, 0.55],
+                opacity: [1, 1, 0],
+                rotate: index % 2 ? 135 : -135,
+              }}
+              transition={{ duration: 0.82, ease: "easeOut", delay: index * 0.025 }}
+            />
+          ))}
+          <motion.span className="habit-burst-seal" initial={{ scale: 0, rotate: -18 }} animate={{ scale: [0, 1.35, 1], rotate: [-18, 8, 0] }} transition={{ type: "spring", stiffness: 310, damping: 16 }}>
+            ✓
+          </motion.span>
+        </span>
+      )}
     </motion.article>
   );
 }
@@ -572,6 +634,10 @@ export default function App() {
   const [sceneReaction, setSceneReaction] = useState<SceneReaction | null>(
     null,
   );
+  const [panelCollapsed, setPanelCollapsed] = useState(false);
+  const [panelRaised, setPanelRaised] = useState(false);
+  const [resetConfirm, setResetConfirm] = useState(false);
+  const hasShownToday = useRef(false);
   const scrollPositions = useRef<Partial<Record<Tab, number>>>({});
   useEffect(() => {
     const timer = setTimeout(
@@ -629,6 +695,18 @@ export default function App() {
     completions =
       useLiveQuery(() => db.completions.toArray(), [ready], []) || [],
     milestones = useLiveQuery(() => db.milestones.toArray(), [ready], []) || [];
+  useEffect(() => {
+    if (!settings?.onboarded || tab !== "today") return;
+    if (reduced || hasShownToday.current) {
+      setPanelRaised(true);
+      return;
+    }
+    const timer = window.setTimeout(() => {
+      hasShownToday.current = true;
+      setPanelRaised(true);
+    }, 1600);
+    return () => window.clearTimeout(timer);
+  }, [settings?.onboarded, tab, reduced]);
   const locale = settings?.locale || "fa",
     t = copy[locale];
   const active = habits.filter((h) => h.status === "active");
@@ -675,13 +753,14 @@ export default function App() {
     setTab(next);
     window.scrollTo({ top: 0, behavior: "instant" });
   }
-  async function run(action: () => Promise<unknown>) {
+  async function run<T>(action: () => Promise<T>): Promise<T | undefined> {
     setError("");
     setBusy(true);
     try {
-      await action();
+      return await action();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
+      return undefined;
     } finally {
       setBusy(false);
     }
@@ -694,13 +773,23 @@ export default function App() {
       setCreating(false);
     });
   }
-  function done(h: Habit, forDay = dayKey()) {
-    void run(async () => {
-      await checkIn(h.id, forDay);
+  async function done(h: Habit, forDay = dayKey()): Promise<boolean> {
+    const result = await run(() => checkIn(h.id, forDay));
+    if (result) {
       setCelebrate(h.emoji || "🌱");
       setSceneReaction({ kind: "flower", id: Date.now() });
       setTimeout(() => setCelebrate(""), 1250);
-    });
+      return true;
+    }
+    return false;
+  }
+  async function resetApp() {
+    await resetAllData();
+    localStorage.removeItem("lumio-reduce-motion");
+    localStorage.removeItem("lumio-last-backup");
+    localStorage.removeItem("lumio-onboarding-step");
+    history.replaceState(null, "", location.pathname + location.search);
+    window.location.reload();
   }
   function undo(h: Habit) {
     setConfirm({ message: t.confirmUndo, run: () => undoToday(h.id) });
@@ -746,6 +835,25 @@ export default function App() {
           <button onClick={() => location.reload()}>{t.retry}</button>
         )}
       </div>
+    );
+  if (!settings?.onboarded)
+    return (
+      <Onboarding
+        locale={locale}
+        habits={active}
+        reduced={reduced}
+        canInstall={Boolean(installPrompt)}
+        onInstall={install}
+        onFinish={async () => {
+          await updateSettings({ onboarded: true, installDismissed: true });
+          localStorage.removeItem("lumio-onboarding-step");
+          history.replaceState(null, "", `${location.pathname}${location.search}#today`);
+          setTab("today");
+          setPanelCollapsed(false);
+          setPanelRaised(false);
+          hasShownToday.current = false;
+        }}
+      />
     );
   return (
     <div
@@ -810,55 +918,56 @@ export default function App() {
                   mode={mode}
                   reaction={sceneReaction}
                   onReact={(kind) => setSceneReaction({ kind, id: Date.now() })}
+                  onReveal={() => {
+                    hasShownToday.current = true;
+                    setPanelRaised(true);
+                    setPanelCollapsed(false);
+                  }}
                 />
                 <motion.section
                   id="today-habits"
-                  className="today-panel"
-                  initial={reduced ? false : { opacity: 0, y: 32 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.05 }}
-                  transition={{ type: "spring", stiffness: 240, damping: 27 }}
+                  className={`today-panel ${panelCollapsed ? "is-collapsed" : ""}`}
+                  initial={false}
+                  animate={{ y: !panelRaised || panelCollapsed ? "calc(100% - 112px)" : 0 }}
+                  transition={reduced ? { duration: 0 } : {
+                    duration: 0.85,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   <button
                     className="panel-grip"
                     aria-label={
-                      locale === "fa" ? "بازگشت به صحنه" : "Return to the world"
+                      !panelRaised || panelCollapsed
+                        ? locale === "fa" ? "باز کردن عادت‌های امروز" : "Open today's habits"
+                        : locale === "fa" ? "جمع کردن عادت‌های امروز" : "Collapse today's habits"
                     }
-                    onClick={() =>
-                      window.scrollTo({
-                        top: 0,
-                        behavior: reduced ? "instant" : "smooth",
-                      })
-                    }
+                    aria-expanded={panelRaised && !panelCollapsed}
+                    onClick={() => {
+                      hasShownToday.current = true;
+                      if (!panelRaised) {
+                        setPanelRaised(true);
+                        setPanelCollapsed(false);
+                      } else setPanelCollapsed((value) => !value);
+                    }}
                   >
                     <span />
                   </button>
                   <div className="section-heading">
                     <div>
-                      <span className="eyebrow">
-                        {num(active.length, locale)} / {num(3, locale)}
-                      </span>
+                      <span className="eyebrow">{num(active.length, locale)} / {num(3, locale)}</span>
                       <h2>{t.today}</h2>
                     </div>
-                    <button
-                      className="paper-button small"
-                      onClick={() => setCreating(true)}
-                      disabled={active.length >= 3}
-                    >
-                      <Plus size={17} />
-                      {t.create}
-                    </button>
                   </div>
+                  <div className="today-panel-content" inert={!panelRaised || panelCollapsed}>
                   {active.length === 0 ? (
                     <div className="empty-card">
                       <Leaf size={27} />
                       <p>{t.empty}</p>
                       <button
                         className="paper-button"
-                        onClick={() => setCreating(true)}
+                        onClick={() => go("insights")}
                       >
-                        {t.start}
-                        <ChevronLeft size={17} />
+                        {t.toInsights}
                       </button>
                     </div>
                   ) : (
@@ -871,10 +980,13 @@ export default function App() {
                           locale={locale}
                           onDone={() => done(h)}
                           onUndo={() => undo(h)}
+                          busy={busy}
+                          reduced={reduced}
                         />
                       ))}
                     </div>
                   )}
+                  </div>
                 </motion.section>
               </>
             )}
@@ -982,6 +1094,15 @@ export default function App() {
                       ? "رد قدم‌های کوچک تو"
                       : "The shape of your small steps"}
                   </p>
+                </div>
+                <div className="paper-panel insight-habit-action">
+                  <div>
+                    <strong>{t.active} · {num(active.length, locale)} / {num(3, locale)}</strong>
+                    <p>{active.length >= 3 ? t.full : locale === "fa" ? "برای یک قدم روزانهٔ تازه جا داری." : "There is room for another daily step."}</p>
+                  </div>
+                  <button className="paper-button" disabled={active.length >= 3} onClick={() => setCreating(true)}>
+                    <Plus size={18} /> {t.create}
+                  </button>
                 </div>
                 <div className="achievement-shelf">
                   {[
@@ -1172,6 +1293,9 @@ export default function App() {
                       />
                     </label>
                   </div>
+                  <button className="reset-link" onClick={() => setResetConfirm(true)}>
+                    <Trash2 size={17} /> {t.reset}
+                  </button>
                 </div>
                 {active.length > 0 && (
                   <div className="paper-panel">
@@ -1350,6 +1474,20 @@ export default function App() {
         </div>
       </Sheet>
       <Sheet
+        open={resetConfirm}
+        onOpenChange={setResetConfirm}
+        title={t.reset}
+      >
+        <p>{t.resetWarning}</p>
+        <div className="dialog-actions">
+          <button className="paper-button secondary" onClick={() => setResetConfirm(false)}>{t.cancel}</button>
+          <button className="paper-button danger" disabled={busy} onClick={() => {
+            setResetConfirm(false);
+            void run(resetApp);
+          }}>{t.resetConfirm}</button>
+        </div>
+      </Sheet>
+      <Sheet
         open={installGuide}
         onOpenChange={setInstallGuide}
         title={t.install}
@@ -1367,57 +1505,6 @@ export default function App() {
             disabled={!installPrompt}
           >
             {t.install}
-          </button>
-        </div>
-      </Sheet>
-      <Sheet
-        open={!settings?.onboarded}
-        onOpenChange={() => {}}
-        title={t.welcome}
-      >
-        <div className="onboard">
-          <img src="/icons/lumio-120.png" alt="" />
-          <p>{t.welcomeSub}</p>
-          <div className="segmented">
-            <button
-              className={locale === "fa" ? "selected" : ""}
-              onClick={() => updateSettings({ locale: "fa" })}
-            >
-              فارسی
-            </button>
-            <button
-              className={locale === "en" ? "selected" : ""}
-              onClick={() => updateSettings({ locale: "en" })}
-            >
-              English
-            </button>
-          </div>
-          <p className="muted">{t.privacy}</p>
-          <h3>{t.install}</h3>
-          <p>{t.installSub}</p>
-          <p className="muted">{t.ios}</p>
-          <button
-            className="paper-button secondary"
-            onClick={() => void exportNow()}
-          >
-            {t.export}
-          </button>
-          {installPrompt && (
-            <button
-              className="paper-button secondary"
-              onClick={() => void install()}
-            >
-              {t.install}
-            </button>
-          )}
-          <button
-            className="paper-button"
-            onClick={async () => {
-              await updateSettings({ onboarded: true, installDismissed: true });
-              setCreating(true);
-            }}
-          >
-            {t.continue}
           </button>
         </div>
       </Sheet>
